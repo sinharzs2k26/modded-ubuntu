@@ -24,8 +24,6 @@ banner() {
 package() {
 	banner
 	echo -e "${R} [${W}-${R}]${C} Checking required packages..."${W}
-	
-	[ ! -d '/data/data/com.termux/files/home/storage' ] && echo -e "${R} [${W}-${R}]${C} Setting up Storage.."${W} && termux-setup-storage
 
 	if [[ $(command -v pulseaudio) && $(command -v proot-distro) ]]; then
 		echo -e "\n${R} [${W}-${R}]${G} Packages already installed."${W}
@@ -43,14 +41,13 @@ package() {
 
 distro() {
 	echo -e "\n${R} [${W}-${R}]${C} Checking for Distro..."${W}
-	termux-reload-settings
-	
+
 	if [[ -d "$UBUNTU_DIR" ]]; then
 		echo -e "\n${R} [${W}-${R}]${G} Distro already installed."${W}
 		exit 0
 	else
 		proot-distro install ubuntu
-		termux-reload-settings
+
 	fi
 	
 	if [[ -d "$UBUNTU_DIR" ]]; then
@@ -113,7 +110,6 @@ permission() {
 	echo "$(getprop persist.sys.timezone)" > $UBUNTU_DIR/etc/timezone
 	echo "proot-distro login ubuntu" > $PREFIX/bin/ubuntu
 	chmod +x "$PREFIX/bin/ubuntu"
-	termux-reload-settings
 
 	if [[ -e "$PREFIX/bin/ubuntu" ]]; then
 		banner
